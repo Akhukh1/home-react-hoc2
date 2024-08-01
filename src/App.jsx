@@ -1,37 +1,12 @@
 import React, { useState } from 'react';
 
-// function wrap(WrappedComponent, item) {
-//     console.log(item.views)
-//  	if (item.views <= 100) {
-// 		return (<New {...<WrappedComponent/>} />)	
-// 	} else if (item.views >= 1000) {
-// 		return (<Popular {...<WrappedComponent/>} />)	
-// 	} 
-//     else {
-// 		return (<WrappedComponent/>)	
-// 	}
-// }
-
-// function wrap(WrappedComponent, item) {
-//     console.log(item.views)
-//  	if (item.views <= 100) {
-// 		return (New(WrappedComponent))	
-// 	} else if (item.views >= 1000) {
-// 		return (Popular(WrappedComponent))	
-// 	} 
-//     else {
-// 		return (WrappedComponent)	
-// 	}
-// }
-
-
 function wrap(WrappedComponent, item) {
     if (item.views <= 100) {
-       return (<New><WrappedComponent/></New>)	
+       return (<New><WrappedComponent {...item}/></New>);	
    } else if (item.views >= 1000) {
-       return (<Popular><WrappedComponent/></Popular>)	
+       return (<Popular><WrappedComponent {...item}/></Popular>);	
    } else {
-       return (<WrappedComponent/>)	
+       return (<WrappedComponent {...item}/>);	
    }
 }
 
@@ -41,7 +16,7 @@ function New(props) {
             <span className="label">New!</span>
             {props.children}
         </div>
-    )
+    );
 };
 
 function Popular(props) {
@@ -50,29 +25,25 @@ function Popular(props) {
             <span className="label">Popular!</span>
             {props.children}
         </div>
-    )
+    );
 };
 
 function Article(props) {
-    console.log('Article')
-    comsole.log(props.title)
     return (
         <div className="item item-article">
             <h3><a href="#">{props.title}</a></h3>
             <p className="views">Прочтений: {props.views}</p>
         </div>
-    )
+    );
 };
 
 function Video(props) {
-    console.log('Video')
-    comsole.log(props.url)
     return (
         <div className="item item-video">
             <iframe src={props.url} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             <p className="views">Просмотров: {props.views}</p>
         </div>
-    )
+    );
 };
 
 function List(props) {
@@ -80,17 +51,15 @@ function List(props) {
         switch (item.type) {
             case 'video':
                 return (
-                    <>
-                   // <Video {...item} />
-                   wrap(<Video {...item} />, item)
-                   </>
+                   wrap(Video, item)
                 );
 
             case 'article':
-                return (
-                    //<Article {...item} />
-                    wrap(<Article {...item} />, item)
+                return ( 
+                    wrap(Article, item)
                 );
+                default:
+                    return null;
         }
     });
 };
